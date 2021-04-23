@@ -92,7 +92,9 @@ Vagrant.configure("2") do |config|
         sudo tee /etc/apt/trusted.gpg.d/microsoft.gpg > /dev/null
     sudo apt-get update
     sudo apt-get install azure-cli
-
+  
+    terraform -v
+  
     SCRIPT
 
 end
