@@ -68,7 +68,32 @@ Vagrant.configure("2") do |config|
     #   apt-get update
     #   apt-get install -y nginx
     # SHELL
-    
+    config.vm.provision "shell", inline: <<-SCRIPT
+    echo ">>> Starting Install Script"
+
+    sudo apt-get update
+    sudo apt install -y git
+
+    echo ">>> Starting Install Ansible"
+    sudo apt install -y software-properties-common
+    sudo apt-add-repository --yes --update ppa:ansible/ansible
+    sudo apt install -y ansible
+
+    echo ">>> Starting Install Terraform"
+    curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+    sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+    sudo apt-get update && sudo apt-get install terraform
+
+    echo ">>> Starting Install CLI"
+    sudo apt-get update
+    sudo apt-get install -y ca-certificates curl apt-transport-https lsb-release gnupg
+    curl -sL https://packages.microsoft.com/keys/microsoft.asc |
+        gpg --dearmor |
+        sudo tee /etc/apt/trusted.gpg.d/microsoft.gpg > /dev/null
+    sudo apt-get update
+    sudo apt-get install azure-cli
+
+    SCRIPT
 
 end
   
